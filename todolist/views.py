@@ -2,6 +2,22 @@ from django.shortcuts import render
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
+from rest_framework.views import APIView
+# from rest_framework import authentication, permissions
+from django.contrib.auth.models import User
+from .models import TodoItem
+from todolist.serializers import TodoItemSerializer
+
+
+class TodoItemView(APIView):
+   
+    # authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = []
+    def get(self, request, format=None):
+        todos = TodoItem.objects.all()
+        serializer = TodoItemSerializer(todos, many=True)
+        return Response(serializer.data)
+
 
 class LoginView(ObtainAuthToken):
 

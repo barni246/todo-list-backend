@@ -283,17 +283,8 @@
         "kind": 6,
         "importPath": "todolist.serializers",
         "description": "todolist.serializers",
-        "peekOfCode": "class TodoItemSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = TodoItem\n        fields = '__all__'",
+        "peekOfCode": "class TodoItemSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = TodoItem\n        # fields = '__all__'\n        fields = ['id', 'title', 'chacked']",
         "detail": "todolist.serializers",
-        "documentation": {}
-    },
-    {
-        "label": "TodoItemView",
-        "kind": 6,
-        "importPath": "todolist.views",
-        "description": "todolist.views",
-        "peekOfCode": "class TodoItemView(APIView):\n    authentication_classes = [TokenAuthentication]\n    permission_classes = [IsAuthenticated]\n    def get(self, request, format=None):\n        # todos = TodoItem.objects.all()\n        todos = TodoItem.objects.filter(author=request.user)\n        serializer = TodoItemSerializer(todos, many=True)\n        return Response(serializer.data)\nclass LoginView(ObtainAuthToken):\n    def post(self, request, *args, **kwargs):",
-        "detail": "todolist.views",
         "documentation": {}
     },
     {
@@ -302,6 +293,15 @@
         "importPath": "todolist.views",
         "description": "todolist.views",
         "peekOfCode": "class LoginView(ObtainAuthToken):\n    def post(self, request, *args, **kwargs):\n        serializer = self.serializer_class(data=request.data,\n                                           context={'request': request})\n        serializer.is_valid(raise_exception=True)\n        user = serializer.validated_data['user']\n        token, created = Token.objects.get_or_create(user=user)\n        return Response({\n            'token': token.key,\n            'user_id': user.pk,",
+        "detail": "todolist.views",
+        "documentation": {}
+    },
+    {
+        "label": "TodoItemView",
+        "kind": 6,
+        "importPath": "todolist.views",
+        "description": "todolist.views",
+        "peekOfCode": "class TodoItemView(APIView):\n    authentication_classes = [TokenAuthentication]\n    permission_classes = [IsAuthenticated]\n    def get(self, request, format=None):\n        todos = TodoItem.objects.filter(author=request.user)\n        serializer = TodoItemSerializer(todos, many=True)\n        return Response(serializer.data)\n    def post(self, request, format=None):\n        title = request.data.get('title')\n        chacked = request.data.get('chacked')",
         "detail": "todolist.views",
         "documentation": {}
     },
@@ -319,7 +319,7 @@
         "kind": 5,
         "importPath": "todolistbackend.settings",
         "description": "todolistbackend.settings",
-        "peekOfCode": "BASE_DIR = Path(__file__).resolve().parent.parent\n# Quick-start development settings - unsuitable for production\n# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/\n# SECURITY WARNING: keep the secret key used in production secret!\nSECRET_KEY = 'django-insecure-kw=9%(kctv8u-$1owndrw=70&3_ocm)=&^c#ne1o-=&%$2q*fi'\n# SECURITY WARNING: don't run with debug turned on in production!\nDEBUG = True\nALLOWED_HOSTS = [\n    'localhost'\n]",
+        "peekOfCode": "BASE_DIR = Path(__file__).resolve().parent.parent\n# Quick-start development settings - unsuitable for production\n# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/\n# SECURITY WARNING: keep the secret key used in production secret!\nSECRET_KEY = 'django-insecure-kw=9%(kctv8u-$1owndrw=70&3_ocm)=&^c#ne1o-=&%$2q*fi'\n# SECURITY WARNING: don't run with debug turned on in production!\nDEBUG = True\n# ALLOWED_HOSTS = [\n#     'localhost'\n# ]",
         "detail": "todolistbackend.settings",
         "documentation": {}
     },
@@ -328,7 +328,7 @@
         "kind": 5,
         "importPath": "todolistbackend.settings",
         "description": "todolistbackend.settings",
-        "peekOfCode": "SECRET_KEY = 'django-insecure-kw=9%(kctv8u-$1owndrw=70&3_ocm)=&^c#ne1o-=&%$2q*fi'\n# SECURITY WARNING: don't run with debug turned on in production!\nDEBUG = True\nALLOWED_HOSTS = [\n    'localhost'\n]\nCORS_ALLOWED_ORIGINS = [    'http://localhost:4200',]\nINSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',",
+        "peekOfCode": "SECRET_KEY = 'django-insecure-kw=9%(kctv8u-$1owndrw=70&3_ocm)=&^c#ne1o-=&%$2q*fi'\n# SECURITY WARNING: don't run with debug turned on in production!\nDEBUG = True\n# ALLOWED_HOSTS = [\n#     'localhost'\n# ]\nALLOWED_HOSTS = ['localhost', '127.0.0.1']\nCORS_ALLOWED_ORIGINS = [    'http://localhost:4200',]\nINSTALLED_APPS = [\n    'django.contrib.admin',",
         "detail": "todolistbackend.settings",
         "documentation": {}
     },
@@ -337,7 +337,7 @@
         "kind": 5,
         "importPath": "todolistbackend.settings",
         "description": "todolistbackend.settings",
-        "peekOfCode": "DEBUG = True\nALLOWED_HOSTS = [\n    'localhost'\n]\nCORS_ALLOWED_ORIGINS = [    'http://localhost:4200',]\nINSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',",
+        "peekOfCode": "DEBUG = True\n# ALLOWED_HOSTS = [\n#     'localhost'\n# ]\nALLOWED_HOSTS = ['localhost', '127.0.0.1']\nCORS_ALLOWED_ORIGINS = [    'http://localhost:4200',]\nINSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',",
         "detail": "todolistbackend.settings",
         "documentation": {}
     },
@@ -346,7 +346,7 @@
         "kind": 5,
         "importPath": "todolistbackend.settings",
         "description": "todolistbackend.settings",
-        "peekOfCode": "ALLOWED_HOSTS = [\n    'localhost'\n]\nCORS_ALLOWED_ORIGINS = [    'http://localhost:4200',]\nINSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',",
+        "peekOfCode": "ALLOWED_HOSTS = ['localhost', '127.0.0.1']\nCORS_ALLOWED_ORIGINS = [    'http://localhost:4200',]\nINSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'django.contrib.staticfiles',\n    'rest_framework',",
         "detail": "todolistbackend.settings",
         "documentation": {}
     },
@@ -490,7 +490,7 @@
         "kind": 5,
         "importPath": "todolistbackend.urls",
         "description": "todolistbackend.urls",
-        "peekOfCode": "urlpatterns = [\n    path('admin/', admin.site.urls),\n    path('login/', LoginView.as_view()),\n    path('todos/', TodoItemView.as_view()),\n]",
+        "peekOfCode": "urlpatterns = [\n    path('admin/', admin.site.urls),\n    path('login/', LoginView.as_view()),\n    path('todos/', TodoItemView.as_view())\n]",
         "detail": "todolistbackend.urls",
         "documentation": {}
     },
